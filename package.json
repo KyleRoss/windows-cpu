@@ -2,7 +2,7 @@
   "name": "windows-cpu",
   "version": "0.1.0",
   "description": "CPU monitoring utilities for Node.js apps on Windows.",
-  "homepage": "http://kyleross.github.io/windows-cpu",
+  "homepage": "https://github.com/KyleRoss/windows-cpu",
   "license": "MIT",
   "main": "index.js",
   "keywords": [
