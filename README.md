@@ -71,9 +71,9 @@ Gets the total load in percent for all Node.js processes running on the current 
 		// {
 		//    load: 20,
 		//    found: [
-		//        { pid: '1000', process: 'node', load: 10 },
-		//        { pid: '1050', process: 'node#1', load: 6 },
-		//        { pid: '1100', process: 'node#2', load: 4 }
+		//        { pid: 1000, process: 'node', load: 10 },
+		//        { pid: 1050, process: 'node#1', load: 6 },
+		//        { pid: 1100, process: 'node#2', load: 4 }
 		//    ]
 		// }
 		
@@ -101,7 +101,7 @@ Gets the total load in percent for all processes running on the current machine 
 		// {
 		//    load: 10,
 		//    found: [
-		//        { pid: '1000', process: 'node', load: 10 }
+		//        { pid: 1000, process: 'node', load: 10 }
 		//    ]
 		// }
 		
@@ -129,9 +129,9 @@ Gets the total load in percent for process(es) by a specific search parameter.
          // {
          //    load: 8,
          //    found: [
-         //        { pid: '900', process: 'chrome', load: 4 },
-         //        { pid: '905', process: 'chrome#1', load: 0 },
-         //        { pid: '910', process: 'chrome#2', load: 4 }
+         //        { pid: 900, process: 'chrome', load: 4 },
+         //        { pid: 905, process: 'chrome#1', load: 0 },
+         //        { pid: 910, process: 'chrome#2', load: 4 }
          //    ]
          // }
    
