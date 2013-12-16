@@ -46,8 +46,6 @@
         return fn && getType.toString.call(fn) === '[object Function]';
     }
     
-    var child;
-    
     /**
      * Gets the total load in percent for process(es) by a specific search parameter.
      * @param {string|number} arg Specific search parameter. Can be a Process ID or Process Name.
@@ -87,7 +85,7 @@
             
             if (!res) return cb('Cannot find results for provided arg: ' + arg, { load: 0, results: [] });
             
-            var found = res.replace(/[^\S\n]+/g, ':').replace(/\:\s/g, '|').split('|').filter(function(v, i, arr) {
+            var found = res.replace(/[^\S\n]+/g, ':').replace(/\:\s/g, '|').split('|').filter(function(v) {
                 return !!v;
             }).map(function(v) {
                 var data = v.split(':');
