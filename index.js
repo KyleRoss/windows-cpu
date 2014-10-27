@@ -252,13 +252,13 @@
     };
 
     /**
-     * Gets the memory usage for each process that are currently running.
+     * Gets the total memory usage value in KB , MB and GB .
      * @param {function} cb A callback function to handle the result (error, results).
      * @example
      *
      * var cpu = require('windows-cpu');
      *
-     * // Get listing of processors
+     * // Get the memory usage
      * cpu.totalMemoryUsage(function(error, results) {
      *      if(error) {
      *          return console.log(error);
