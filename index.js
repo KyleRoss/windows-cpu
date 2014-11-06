@@ -250,4 +250,50 @@
             cb(null, cpus);
         });
     };
+
+    /**
+     * Gets the total memory usage value in KB , MB and GB .
+     * @param {function} cb A callback function to handle the result (error, results).
+     * @example
+     *
+     * var cpu = require('windows-cpu');
+     *
+     * // Get the memory usage
+     * cpu.totalMemoryUsage(function(error, results) {
+     *      if(error) {
+     *          return console.log(error);
+     *      }
+     *
+     *      // results =>
+     *      // { 
+     *      //    usageInKb: 3236244,
+     *      //    usageInMb: 3160.39453125,
+     *      //    usageInGb: 3.086322784423828 
+     *      // }
+     *
+     *      console.log('Total Memory Usage: ', result);
+     * });
+     */
+    exports.totalMemoryUsage = function totalMemoryUsage(cb) {
+        if (!isFunction(cb)) cb = emptyFn;
+        if (!checkPlatform(cb)) return;
+        
+        var cmd = "tasklist /FO list";
+        exec(cmd, function (error, res, stderr) {
+            if (error !== null || stderr) {
+                return cb(error || stderr);
+            }
+
+            var results = { usageInKb : 0 , usageInMb : 0 , usageInGb : 0  };
+            results.usageInKb = res.split('\n\r').map(function(v){
+                return parseInt(v.split('Mem Usage:')[1].replace('K\r' , '' ).replace('\n' , '').replace(/,/g,'').trim());
+            }).reduce(function(p , c , i , a){
+                return p + c ;
+            });
+            results.usageInMb = results.usageInKb / 1024 ;
+            results.usageInGb = results.usageInMb / 1024 ;
+            
+            cb(null, results);
+        });
+    };
 }());

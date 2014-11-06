@@ -15,7 +15,7 @@
     "stats",
     "module"
   ],
-  "author": "Kyle Ross <kylerross1324@gmail.com>",
+  "author": [ "Kyle Ross <kylerross1324@gmail.com>" , "Vishnu Bharathi <vishnubharathi04@gmail.com> (https://twitter.com/scriptnull)" ],
   "bugs": "https://github.com/KyleRoss/windows-cpu/issues",
   "repository": {
     "type": "git",

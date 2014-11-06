@@ -146,3 +146,21 @@ describe('cpuInfo function', function() {
         });
     });
 });
+
+describe('totalMemoryUsage function', function() {
+    it('should call the callback with an object', function(done) {
+        cpu.totalMemoryUsage(function(error, results) {
+            if (error) {
+                done(error);
+            } else {
+                results.should.be.an.Object.with.properties('usageInKb', 'usageInMb' , 'usageInGb');
+                
+                results.usageInKb.should.be.an.Number;
+                results.usageInMb.should.be.an.Number;
+                results.usageInGb.should.be.an.Number;
+                                
+                done();
+            }
+        });
+    });
+});

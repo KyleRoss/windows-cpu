@@ -171,6 +171,33 @@ Gets the name of each processor in the machine.
 
 **cb**:  *function*,  A callback function to handle the results (error, results).
 
+totalMemoryUsage(cb)
+--------------------    
+Gets the total memory usage value in KB , MB and GB .
+      
+     var cpu = require('windows-cpu');
+    
+     // Get the memory usage 
+     cpu.totalMemoryUsage(function(error, results) {
+          if(error) {
+              return console.log(error);
+          }
+    
+          // results =>
+          // { 
+          //    usageInKb: 3236244,
+          //    usageInMb: 3160.39453125,
+          //    usageInGb: 3.086322784423828 
+          // }
+    
+          console.log('Total Memory Usage: ', result);
+     });
+
+**Parameters**
+
+**cb**:  *function*,  A callback function to handle the results (error, results).
+
+
 ----------
 
 # Issues
