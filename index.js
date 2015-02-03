@@ -1,7 +1,7 @@
 /**
  * windows-cpu module for Node.js to get various load statistics.
  * @module windows-cpu
- * @version 0.1.0
+ * @version 0.1.3
  * @author Kyle Ross <kylerross1324@gmail.com>
  * @license MIT License
  * 
@@ -15,7 +15,10 @@
 
 (function() {
     var platform = require('os').platform(),
+        path     = require('path'),
         exec     = require('child_process').exec,
+        execFile = require('child_process').execFile,
+        wmic     = platform === 'win32'? path.join(process.env.SystemRoot, 'System32', 'wbem', 'wmic.exe') : null,
         emptyFn  = function(){},
         findLoad;
     
@@ -26,10 +29,8 @@
      * @returns {boolean} True if `win32` platform, else false.
      */
     function checkPlatform(cb) {
-        if (platform !== 'win32') {
-            if (isFunction(cb)) {
-                cb(new Error('windows-cpu> [ERROR] This module only works on windows platforms.'));
-            }
+        if(platform !== 'win32') {
+            if(isFunction(cb)) cb(new Error('windows-cpu> [ERROR] This module only works on Windows platforms.'));
             return false;
         }
         return true;
@@ -74,16 +75,13 @@
      * });
      */
     findLoad = exports.findLoad = function findLoad(arg, cb) {
-        if (!isFunction(cb)) cb = emptyFn;
-        if (!checkPlatform(cb)) return;
+        if(!isFunction(cb)) cb = emptyFn;
+        if(!checkPlatform(cb)) return;
         
         var cmd = "wmic path Win32_PerfFormattedData_PerfProc_Process get Name,PercentProcessorTime,IDProcess | findstr /i /c:" + arg;
         exec(cmd, function (error, res, stderr) {
-            if (error !== null || stderr) {
-                return cb(error || stderr);
-            }
-            
-            if (!res) return cb('Cannot find results for provided arg: ' + arg, { load: 0, results: [] });
+            if(error !== null || stderr) return cb(error || stderr);
+            if(!res) return cb('Cannot find results for provided arg: ' + arg, { load: 0, results: [] });
             
             var found = res.replace(/[^\S\n]+/g, ':').replace(/\:\s/g, '|').split('|').filter(function(v) {
                 return !!v;
@@ -135,16 +133,11 @@
         if (!isFunction(cb)) cb = emptyFn;
         if (!checkPlatform(cb)) return;
         
-        var cmd = "@for /f \"skip=1\" %p in ('wmic cpu get loadpercentage') do @echo %p%";
-        exec(cmd, function (error, res, stderr) {
-            if (error !== null || stderr) {
-                return cb(error || stderr);
-            }
+        execFile(wmic, ['cpu', 'get', 'loadpercentage'], function (error, res, stderr) {
+            if(error !== null || stderr) return cb(error || stderr);
             
-            var cpus = res.replace(/\s/g, '').split('%').filter(function(v, i, arr) {
-                return (i === 0 && !!v) ? true : !!v;
-            }).map(function(v) {
-                return +v;
+            var cpus = res.match(/\d+/g).map(function(x) { 
+                return +(x.trim()); 
             });
             
             cb(null, cpus);
@@ -232,21 +225,17 @@
      * });
      */
     exports.cpuInfo = function cpuInfo(cb) {
-        if (!isFunction(cb)) cb = emptyFn;
-        if (!checkPlatform(cb)) return;
+        if(!isFunction(cb)) cb = emptyFn;
+        if(!checkPlatform(cb)) return;
         
-        var cmd = "@for /f \"skip=1 tokens=*\" %p in ('wmic cpu get Name') do @echo :%p";
-        exec(cmd, function (error, res, stderr) {
-            if (error !== null || stderr) {
-                return cb(error || stderr);
-            }
+        execFile(wmic, ['cpu', 'get', 'Name'], function (error, res, stderr) {
+            if(error !== null || stderr) return cb(error || stderr);
             
-            var cpus = res.replace(/[^\S\n]+$/g, '').split(':').map(function(v) {
+            var cpus = res.match(/[^\r\n]+/g).map(function(v) {
                 return v.trim();
-            }).filter(function(v) {
-                return !!v;
             });
             
+            cpus.shift();
             cb(null, cpus);
         });
     };
@@ -278,20 +267,20 @@
         if (!isFunction(cb)) cb = emptyFn;
         if (!checkPlatform(cb)) return;
         
-        var cmd = "tasklist /FO list";
+        var cmd = "tasklist /FO csv /nh";
         exec(cmd, function (error, res, stderr) {
-            if (error !== null || stderr) {
-                return cb(error || stderr);
-            }
-
-            var results = { usageInKb : 0 , usageInMb : 0 , usageInGb : 0  };
-            results.usageInKb = res.split('\n\r').map(function(v){
-                return parseInt(v.split('Mem Usage:')[1].replace('K\r' , '' ).replace('\n' , '').replace(/,/g,'').trim());
-            }).reduce(function(p , c , i , a){
-                return p + c ;
+            if(error !== null || stderr) return cb(error || stderr);
+            var results = { usageInKb: 0 , usageInMb: 0 , usageInGb: 0 };
+            
+            results.usageInKb = res.match(/[^\r\n]+/g).map(function(v) {
+                var amt = +v.split('","')[4].replace(/[^\d]/g, '');
+                return (!isNaN(amt) && typeof amt === 'number')? amt : 0;
+            }).reduce(function(prev, current) {
+                return prev + current;
             });
-            results.usageInMb = results.usageInKb / 1024 ;
-            results.usageInGb = results.usageInMb / 1024 ;
+            
+            results.usageInMb = results.usageInKb / 1024;
+            results.usageInGb = results.usageInMb / 1024;
             
             cb(null, results);
         });
