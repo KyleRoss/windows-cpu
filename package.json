@@ -1,6 +1,6 @@
 {
   "name": "windows-cpu",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "CPU monitoring utilities for Node.js apps on Windows.",
   "homepage": "https://github.com/KyleRoss/windows-cpu",
   "license": "MIT",

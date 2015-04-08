@@ -1,6 +1,10 @@
 # windows-cpu History
 Changes to `windows-cpu` will be recorded in this file.
 
+## 0.1.4 (4/8/2015)
+* `totalLoad` crashing when no results returned (@driedger - #6)
+* Updated README to reflect Windows 8 support
+
 ## 0.1.3 (2/3/2015)
 * Performance improvements for functions that call `wmic.exe` (thanks @SkyLined - #3)
     * Updated `totalLoad` function to call `wmic.exe` directly
