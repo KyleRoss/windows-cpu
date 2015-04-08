@@ -1,7 +1,7 @@
 /**
  * windows-cpu module for Node.js to get various load statistics.
  * @module windows-cpu
- * @version 0.1.3
+ * @version 0.1.4
  * @author Kyle Ross <kylerross1324@gmail.com>
  * @license MIT License
  * 
@@ -136,7 +136,7 @@
         execFile(wmic, ['cpu', 'get', 'loadpercentage'], function (error, res, stderr) {
             if(error !== null || stderr) return cb(error || stderr);
             
-            var cpus = res.match(/\d+/g).map(function(x) { 
+            var cpus = (res.match(/\d+/g) || []).map(function(x) { 
                 return +(x.trim()); 
             });
             
