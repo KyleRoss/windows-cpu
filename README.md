@@ -8,10 +8,14 @@ A small API that provides load information about any process or the system on Wi
 
 **Supported Platforms**
 
-- Windows XP - Unknown (Need Testers)
-- Windows 7 - Supported and tested
-- Windows Server 2008 - Supported and tested
-- Windows 8 - Supported and tested (thank you @SkyLined, @EricMcRay, @scriptnull, @UltimateBrent)
+| Windows Version     | Supported? | Notes                                                     |
+|---------------------|------------|-----------------------------------------------------------|
+| XP Home             | No         | Does not have `wmic`. Thanks @inexist3nce                 |
+| XP Professional     | Yes        | Thanks @inexist3nce                                       |
+| Windows 7           | Yes        |                                                           |
+| Windows Server 2008 | Yes        |                                                           |
+| Windows 8           | Yes        | Thanks @SkyLined, @EricMcRay, @scriptnull, @UltimateBrent |
+| Windows 10          | Yes        | Thanks @inexist3nce                                       |
 
 ## Important Notes
 This module has only been tested on a Windows 7 and 2008 Server machine. I do not have access to any other versions of Windows to test, so anyone willing to test this script on other versions and create a pull request for README.md with supported platforms, would be very helpful.
