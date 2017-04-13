@@ -1,12 +1,12 @@
 /**
  * windows-cpu - Tests for windows-cpu functionality
- * @author Kyle Ross <kylerross1324@gmail.com>
+ * @author Kyle Ross
  * @requires mocha
  * @requires should
  */
 
-var should = require('should'),
-    cpu;
+const should = require('should');
+let cpu;
 
 beforeEach(function() {
     cpu = require('../');
@@ -84,43 +84,6 @@ describe('processLoad function', function() {
                     v.load.should.be.an.Number;
                 });
                 done();
-            }
-        });
-    });
-});
-
-describe('findLoad function', function() {
-    it('should call the callback with an object', function(done) {
-        cpu.findLoad('system', function(error, results) {
-            if (error) {
-                done(error);
-            } else {
-                results.should.be.an.Object.with.properties('load', 'found');
-                
-                results.load.should.be.an.Number.and.be.within(0, 100);
-                results.found.should.be.an.Array;
-                
-                if (results.found.length <= 0) {
-                    done('results.found length should be greater than 0');
-                }
-                
-                results.found.forEach(function(v) {
-                    v.should.be.an.Object.with.properties('pid', 'process', 'load');
-                    v.pid.should.be.an.Number;
-                    v.process.should.be.a.String.and.not.be.empty;
-                    v.load.should.be.an.Number;
-                });
-                done();
-            }
-        });
-    });
-    
-    it('should call the callback with an error', function(done) {
-        cpu.findLoad('someprocess', function(error, results) {
-            if (error) {
-                done();
-            } else {
-                done('Result should have been an error.');
             }
         });
     });
