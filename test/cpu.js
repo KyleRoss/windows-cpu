@@ -43,7 +43,7 @@ describe('Module', () => {
                 result.then((res) => {
                     assert.isArray(res);
                     done();
-                });
+                }).catch(e => { done(e); });
             });
         });
         
@@ -59,10 +59,10 @@ describe('Module', () => {
                 result.then((res) => {
                     assert.isObject(res);
                     assert.hasAllKeys(res, ['load', 'found']);
-                    assert.isAbove(res.load.length, 0);
+                    assert.isNumber(res.load);
                     assert.isAbove(res.found.length, 0);
                     done();
-                });
+                }).catch(e => { done(e); });
             });
             
             it('should return Promise that resolves with an Object (with argument)', (done) => {
@@ -72,10 +72,10 @@ describe('Module', () => {
                 result.then((res) => {
                     assert.isObject(res);
                     assert.hasAllKeys(res, ['load', 'found']);
-                    assert.isAbove(res.load.length, 0);
+                    assert.isNumber(res.load);
                     assert.isAbove(res.found.length, 0);
                     done();
-                });
+                }).catch(e => { done(e); });
             });
         });
         
@@ -112,7 +112,7 @@ describe('Module', () => {
                     assert.isArray(res);
                     assert.isAbove(res.length, 0);
                     done();
-                });
+                }).catch(e => { done(e); });
             });
         });
         
@@ -129,7 +129,7 @@ describe('Module', () => {
                     assert.isObject(res);
                     assert.hasAllKeys(res, ['usageInKb', 'usageInMb', 'usageInGb']);
                     done();
-                });
+                }).catch(e => { done(e); });
             });
         });
     });
