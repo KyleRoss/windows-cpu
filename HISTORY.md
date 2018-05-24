@@ -1,7 +1,7 @@
 # windows-cpu History
 Changes to `windows-cpu` will be recorded in this file.
 
-## 1.0.0-beta.1 (5/23/2018)
+## 1.0.0 (5/24/2018)
 * **BREAKING:** `checkPlatform()` has been renamed to `isSupported()` and is no longer called in the constructor.
 * **BREAKING:** `processLoad()` has been renamed to `thisLoad()`.
 * **BREAKING:** Minimum supported Node version 8.x+
@@ -12,6 +12,10 @@ Changes to `windows-cpu` will be recorded in this file.
 * Refactor to ES6
 * Added dependency `command-join` to assist with escaping malicious input to `findLoad()`.
 * Added CI for testing new releases.
+
+## 0.1.5 (5/24/2018)
+* Added `command-join` dependency.
+* Fix command line injection vulnerability - CWE-94 (thanks Daniel Bond).
 
 ## 0.1.4 (4/8/2015)
 * `totalLoad` crashing when no results returned (@driedger - #6)
