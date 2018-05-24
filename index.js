@@ -20,6 +20,7 @@
         execFile = require('child_process').execFile,
         wmic     = platform === 'win32'? path.join(process.env.SystemRoot, 'System32', 'wbem', 'wmic.exe') : null,
         emptyFn  = function(){},
+        commandJoin = require('command-join'),
         findLoad;
     
     /*
@@ -78,8 +79,8 @@
         if(!isFunction(cb)) cb = emptyFn;
         if(!checkPlatform(cb)) return;
         
-        var cmd = "wmic path Win32_PerfFormattedData_PerfProc_Process get Name,PercentProcessorTime,IDProcess | findstr /i /c:" + arg;
-        exec(cmd, function (error, res, stderr) {
+        var cmd = "wmic path Win32_PerfFormattedData_PerfProc_Process get Name,PercentProcessorTime,IDProcess | findstr /i /c:" + commandJoin([arg]);
+        exec(cmd, function(error, res, stderr) {
             if(error !== null || stderr) return cb(error || stderr);
             if(!res) return cb('Cannot find results for provided arg: ' + arg, { load: 0, results: [] });
             
