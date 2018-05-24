@@ -12,15 +12,15 @@
  *
  * var cpu = require('windows-cpu');
  */
-
+ 
 (function() {
     var platform = require('os').platform(),
-        path     = require('path'),
-        exec     = require('child_process').exec,
+        path = require('path'),
+        exec = require('child_process').exec,
         execFile = require('child_process').execFile,
-        wmic     = platform === 'win32'? path.join(process.env.SystemRoot, 'System32', 'wbem', 'wmic.exe') : null,
-        emptyFn  = function(){},
         commandJoin = require('command-join'),
+        wmic = platform === 'win32'? path.join(process.env.SystemRoot, 'System32', 'wbem', 'wmic.exe') : null,
+        emptyFn = function() { /**/ },
         findLoad;
     
     /*
@@ -84,7 +84,7 @@
             if(error !== null || stderr) return cb(error || stderr);
             if(!res) return cb('Cannot find results for provided arg: ' + arg, { load: 0, results: [] });
             
-            var found = res.replace(/[^\S\n]+/g, ':').replace(/\:\s/g, '|').split('|').filter(function(v) {
+            var found = res.replace(/[^\S\n]+/g, ':').replace(/:\s/g, '|').split('|').filter(function(v) {
                 return !!v;
             }).map(function(v) {
                 var data = v.split(':');
@@ -134,7 +134,7 @@
         if (!isFunction(cb)) cb = emptyFn;
         if (!checkPlatform(cb)) return;
         
-        execFile(wmic, ['cpu', 'get', 'loadpercentage'], function (error, res, stderr) {
+        execFile(wmic, ['cpu', 'get', 'loadpercentage'], function(error, res, stderr) {
             if(error !== null || stderr) return cb(error || stderr);
             
             var cpus = (res.match(/\d+/g) || []).map(function(x) { 
@@ -229,7 +229,7 @@
         if(!isFunction(cb)) cb = emptyFn;
         if(!checkPlatform(cb)) return;
         
-        execFile(wmic, ['cpu', 'get', 'Name'], function (error, res, stderr) {
+        execFile(wmic, ['cpu', 'get', 'Name'], function(error, res, stderr) {
             if(error !== null || stderr) return cb(error || stderr);
             
             var cpus = res.match(/[^\r\n]+/g).map(function(v) {
@@ -269,7 +269,7 @@
         if (!checkPlatform(cb)) return;
         
         var cmd = "tasklist /FO csv /nh";
-        exec(cmd, function (error, res, stderr) {
+        exec(cmd, function(error, res, stderr) {
             if(error !== null || stderr) return cb(error || stderr);
             var results = { usageInKb: 0 , usageInMb: 0 , usageInGb: 0 };
             
