@@ -1,12 +1,17 @@
 # windows-cpu History
 Changes to `windows-cpu` will be recorded in this file.
 
-## 1.0.0 (4/13/2017)
-* **Breaking Change:** `findLoad` has been removed as a public method
-* **Breaking Change:** Minimum supported Node version 6.x+
-* **New:** Now checks if `wmic.exe` exists when checking platform
+## 1.0.0-beta.1 (5/23/2018)
+* **BREAKING:** `checkPlatform()` has been renamed to `isSupported()` and is no longer called in the constructor.
+* **BREAKING:** `processLoad()` has been renamed to `thisLoad()`.
+* **BREAKING:** Minimum supported Node version 8.x+
+* **BREAKING:** All methods that originally used callbacks now returns Promises.
+* **NEW:** Now checks if `wmic.exe` exists when checking for support
+* **NEW:** `findLoad()` will now return all processes and their load if no argument is provided.
 * Fix command line injection vulnerability (thanks Daniel Bond)
 * Refactor to ES6
+* Added dependency `command-join` to assist with escaping malicious input to `findLoad()`.
+* Added CI for testing new releases.
 
 ## 0.1.4 (4/8/2015)
 * `totalLoad` crashing when no results returned (@driedger - #6)

@@ -2,128 +2,135 @@
  * windows-cpu - Tests for windows-cpu functionality
  * @author Kyle Ross
  * @requires mocha
- * @requires should
+ * @requires chai
  */
 
-const should = require('should');
-let cpu;
+const assert = require('chai').assert;
+const cpu = require('../');
 
-beforeEach(function() {
-    cpu = require('../');
-});
-
-describe('totalLoad function', function() {
-    it('should call the callback with an array of number(s)', function(done) {
-        cpu.totalLoad(function(error, results) {
-            if (error) {
-                done(error);
-            } else {
-                results.should.be.an.Array;
-                
-                if (results.length <= 0) {
-                    done('results length should be greater than 0');
-                }
-                
-                results.forEach(function(v) {
-                    v.should.be.an.Number.and.be.within(0, 100);
-                });
-                done();
-            }
+describe('Module', () => {
+    describe('Export', () => {
+        it('should export instance of WindowsCPU', () => {
+            assert.instanceOf(cpu, cpu.WindowsCPU);
+        });
+        
+        it('should have access to uninstantiated class', () => {
+            assert.isOk(cpu.WindowsCPU);
         });
     });
-});
-
-describe('nodeLoad function', function() {
-    it('should call the callback with an object', function(done) {
-        cpu.nodeLoad(function(error, results) {
-            if (error) {
-                done(error);
-            } else {
-                results.should.be.an.Object.with.properties('load', 'found');
-                
-                results.load.should.be.an.Number.and.be.within(0, 100);
-                results.found.should.be.an.Array;
-                
-                if (results.found.length <= 0) {
-                    done('results.found length should be greater than 0');
-                }
-                
-                results.found.forEach(function(v) {
-                    v.should.be.an.Object.with.properties('pid', 'process', 'load');
-                    v.pid.should.be.an.Number;
-                    v.process.should.be.a.String.and.not.be.empty;
-                    v.load.should.be.an.Number;
-                });
-                done();
-            }
+    
+    describe('WindowsCPU', () => {
+        describe('isSupported()', () => {
+            it('should be a function', () => {
+                assert.isFunction(cpu.isSupported);
+            });
+            
+            it('should return boolean', () => {
+                let support = cpu.isSupported();
+                assert.isBoolean(support);
+            });
         });
-    });
-});
-
-describe('processLoad function', function() {
-    it('should call the callback with an object', function(done) {
-        cpu.processLoad(function(error, results) {
-            if (error) {
-                done(error);
-            } else {
-                results.should.be.an.Object.with.properties('load', 'found');
+        
+        describe('totalLoad()', () => {
+            it('should be a function', () => {
+                assert.isFunction(cpu.totalLoad);
+            });
+            
+            it('should return Promise that resolves with an array', (done) => {
+                let result = cpu.totalLoad();
                 
-                results.load.should.be.an.Number.and.be.within(0, 100);
-                results.found.should.be.an.Array;
-                
-                if (results.found.length <= 0) {
-                    done('results.found length should be greater than 0');
-                }
-                
-                results.found.should.have.a.lengthOf(1);
-                
-                results.found.forEach(function(v) {
-                    v.should.be.an.Object.with.properties('pid', 'process', 'load');
-                    v.pid.should.be.an.Number;
-                    v.process.should.be.a.String.and.not.be.empty;
-                    v.load.should.be.an.Number;
+                assert.instanceOf(result, Promise);
+                result.then((res) => {
+                    assert.isArray(res);
+                    done();
                 });
-                done();
-            }
+            });
         });
-    });
-});
+        
+        describe('findLoad()', () => {
+            it('should be a function', () => {
+                assert.isFunction(cpu.findLoad);
+            });
 
-describe('cpuInfo function', function() {
-    it('should call the callback with an array', function(done) {
-        cpu.cpuInfo(function(error, results) {
-            if (error) {
-                done(error);
-            } else {
-                results.should.be.an.Array;
-                
-                if (results.length <= 0) {
-                    done('results length should be greater than 0');
-                }
-                
-                results.forEach(function(v) {
-                    v.should.be.a.String.and.not.be.empty;
+            it('should return Promise that resolves with an Object (without argument)', (done) => {
+                let result = cpu.findLoad();
+
+                assert.instanceOf(result, Promise);
+                result.then((res) => {
+                    assert.isObject(res);
+                    assert.hasAllKeys(res, ['load', 'found']);
+                    assert.isAbove(res.load.length, 0);
+                    assert.isAbove(res.found.length, 0);
+                    done();
                 });
-                done();
-            }
-        });
-    });
-});
+            });
+            
+            it('should return Promise that resolves with an Object (with argument)', (done) => {
+                let result = cpu.findLoad('node');
 
-describe('totalMemoryUsage function', function() {
-    it('should call the callback with an object', function(done) {
-        cpu.totalMemoryUsage(function(error, results) {
-            if (error) {
-                done(error);
-            } else {
-                results.should.be.an.Object.with.properties('usageInKb', 'usageInMb' , 'usageInGb');
+                assert.instanceOf(result, Promise);
+                result.then((res) => {
+                    assert.isObject(res);
+                    assert.hasAllKeys(res, ['load', 'found']);
+                    assert.isAbove(res.load.length, 0);
+                    assert.isAbove(res.found.length, 0);
+                    done();
+                });
+            });
+        });
+        
+        describe('nodeLoad()', () => {
+            it('should be a function', () => {
+                assert.isFunction(cpu.nodeLoad);
+            });
+            
+            it('should return a Promise', () => {
+                assert.instanceOf(cpu.nodeLoad(), Promise);
+            });
+        });
+        
+        describe('thisLoad()', () => {
+            it('should be a function', () => {
+                assert.isFunction(cpu.thisLoad);
+            });
+
+            it('should return a Promise', () => {
+                assert.instanceOf(cpu.thisLoad(), Promise);
+            });
+        });
+        
+        describe('cpuInfo()', () => {
+            it('should be a function', () => {
+                assert.isFunction(cpu.cpuInfo);
+            });
+
+            it('should return a Promise that resolves with an array', (done) => {
+                let result = cpu.cpuInfo();
                 
-                results.usageInKb.should.be.an.Number;
-                results.usageInMb.should.be.an.Number;
-                results.usageInGb.should.be.an.Number;
-                                
-                done();
-            }
+                assert.instanceOf(result, Promise);
+                result.then(res => {
+                    assert.isArray(res);
+                    assert.isAbove(res.length, 0);
+                    done();
+                });
+            });
+        });
+        
+        describe('totalMemoryUsage()', () => {
+            it('should be a function', () => {
+                assert.isFunction(cpu.totalMemoryUsage);
+            });
+
+            it('should return a Promise that resolves with an object', (done) => {
+                let result = cpu.totalMemoryUsage();
+
+                assert.instanceOf(result, Promise);
+                result.then(res => {
+                    assert.isObject(res);
+                    assert.hasAllKeys(res, ['usageInKb', 'usageInMb', 'usageInGb']);
+                    done();
+                });
+            });
         });
     });
 });
