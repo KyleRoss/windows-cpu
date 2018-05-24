@@ -1,6 +1,10 @@
 # windows-cpu History
 Changes to `windows-cpu` will be recorded in this file.
 
+## 0.1.5 (5/24/2018)
+* Added `command-join` dependency.
+* Fix command line injection vulnerability - CWE-94 (thanks Daniel Bond).
+
 ## 0.1.4 (4/8/2015)
 * `totalLoad` crashing when no results returned (@driedger - #6)
 * Updated README to reflect Windows 8 support

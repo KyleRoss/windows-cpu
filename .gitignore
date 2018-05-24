@@ -1,4 +1,2 @@
-.komodotools
-*.komodoproject
 node_modules
 npm-debug.log

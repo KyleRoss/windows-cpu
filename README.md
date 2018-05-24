@@ -4,7 +4,7 @@ windows-cpu
 CPU monitoring utilities for Node.js apps on Windows.
 
 ## About
-A small API that provides load information about any process or the system on Windows platforms. Node.js does have `os.loadavg()` although it does not work correctly in Windows. Windows-CPU is a module that uses native Windows commands to compile load information. It's a lightweight module that has no dependencies and suitable tests.
+A small API that provides load information about any process or the system on Windows platforms. Node.js does have `os.loadavg()` although it does not work correctly in Windows. Windows-CPU is a module that uses native Windows commands to compile load information. It's a lightweight module that has only one dependency and suitable tests.
 
 **Supported Platforms**
 

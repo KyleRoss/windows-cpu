@@ -1,0 +1,8 @@
+version: 0.1.{build}
+skip_tags: true
+install:
+- cmd: npm install
+build: off
+test_script:
+- cmd: npm run test
+deploy: off
