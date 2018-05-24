@@ -1,10 +1,14 @@
-windows-cpu
-===========
+# windows-cpu
+
+[![NPM Downloads](https://img.shields.io/npm/v/windows-cpu.svg?style=for-the-badge)](https://www.npmjs.com/package/windows-cpu) [![NPM Downloads](https://img.shields.io/npm/dt/windows-cpu.svg?style=for-the-badge)](https://www.npmjs.com/package/windows-cpu) [![GitHub stars](https://img.shields.io/github/stars/KyleRoss/windows-cpu.svg?style=for-the-badge)](https://github.com/KyleRoss/windows-cpu/stargazers) [![GitHub issues](https://img.shields.io/github/issues/KyleRoss/windows-cpu.svg?style=for-the-badge)](https://github.com/KyleRoss/windows-cpu/issues) [![GitHub license](https://img.shields.io/github/license/KyleRoss/windows-cpu.svg?style=for-the-badge)](https://github.com/KyleRoss/windows-cpu/blob/master/LICENSE) ![AppVeyor tests](https://img.shields.io/appveyor/tests/KyleRoss/windows-cpu.svg?style=for-the-badge)
+
 
 CPU monitoring utilities for Node.js apps on Windows.
 
+##### NOTE: Version 1.0.0 only supports Node v8+. If you need to support an older version of Node, install `windows-cpu@0.1.5`.
+
 ## About
-A small API that provides load information about any process or the system on Windows platforms. Node.js does have `os.loadavg()` although it does not work correctly in Windows. Windows-CPU is a module that uses native Windows commands to compile load information. It's a lightweight module that has no dependencies and suitable tests.
+A small API that provides load information about any process or the system on Windows platforms. Node.js does have `os.loadavg()` although it does not work correctly in Windows. Windows-CPU is a module that uses native Windows commands to compile load information. It's a lightweight module that has only one dependency and suitable tests.
 
 **Supported Platforms**
 
@@ -25,190 +29,218 @@ This module uses child processes to call WMIC to gather it's information, if you
 ## Getting Started
 Install windows-cpu via NPM.
 
-	npm install windows-cpu --save
+```bash
+npm install windows-cpu --save
+```
 
 Require windows-cpu in your own Node.js application.
 
-	var cpu = require('windows-cpu');
-
-
-----------
-
-# Documentation
-totalLoad(cb)
--------------
-Gets the total load in percent for all processes running on the current machine per CPU.
-
-	var cpu = require('windows-cpu');
-	
-	// Get total load on server for each CPU
-	cpu.totalLoad(function(error, results) {
-		if(error) {
-		return console.log(error);
-		}
-		
-		// results (single cpu in percent) =>
-		// [8]
-		
-		// results (multi-cpu in percent) =>
-		// [3, 10]
-	});
-
-
-**Parameters**
-
-**cb**:  *function*,  A callback function to handle the results (error, results).
-
-nodeLoad(cb)
-------------
-Gets the total load in percent for all Node.js processes running on the current machine.
-
-	var cpu = require('windows-cpu');
-	
-	// Get total load for all node processes
-	cpu.nodeLoad(function(error, results) {
-		if(error) {
-		return console.log(error);
-		}
-		
-		// results =>
-		// {
-		//    load: 20,
-		//    found: [
-		//        { pid: 1000, process: 'node', load: 10 },
-		//        { pid: 1050, process: 'node#1', load: 6 },
-		//        { pid: 1100, process: 'node#2', load: 4 }
-		//    ]
-		// }
-		
-		console.log('Total Node.js Load: ' + results.load);
-	});
-
-
-**Parameters**
-
-**cb**:  *function*,  A callback function to handle the results (error, results).
-
-processLoad(cb)
----------------
-Gets the total load in percent for all processes running on the current machine per CPU.
-
-	var cpu = require('windows-cpu');
-	
-	// Get load for current running node process
-	cpu.processLoad(function(error, results) {
-		if(error) {
-		return console.log(error);
-		}
-		
-		// results =>
-		// {
-		//    load: 10,
-		//    found: [
-		//        { pid: 1000, process: 'node', load: 10 }
-		//    ]
-		// }
-		
-		console.log('Total Process Load: ' + results.load);
-	});
-
-
-**Parameters**
-
-**cb**:  *function*,  A callback function to handle the results (error, results).
-
-findLoad(arg, cb)
----------------
-Gets the total load in percent for process(es) by a specific search parameter.
-
-	var cpu = require('windows-cpu');
-    
-    // Find the total load for "chrome" processes
-    cpu.findLoad('chrome', function(error, results) {
-         if(error) {
-             return console.log(error);
-         }
-   
-         // results =>
-         // {
-         //    load: 8,
-         //    found: [
-         //        { pid: 900, process: 'chrome', load: 4 },
-         //        { pid: 905, process: 'chrome#1', load: 0 },
-         //        { pid: 910, process: 'chrome#2', load: 4 }
-         //    ]
-         // }
-   
-         console.log('Google Chrome is currently using ' + results.load + '% of the cpu.');
-    });
-
-
-**Parameters**
-
-**arg**: *string|number*, Specific search parameter. Can be a Process ID or Process Name.
-
-**cb**:  *function*,  A callback function to handle the results (error, results).
-
-cpuInfo(cb)
------------
-Gets the name of each processor in the machine.
-
-	var cpu = require('windows-cpu');
-	
-	// Get listing of processors
-	cpu.cpuInfo(function(error, results) {
-		if(error) {
-		return console.log(error);
-		}
-		
-		// results =>
-		// [
-		//    'Intel(R) Xeon(R) CPU E5-2609 0 @ 2.40GHz',
-		//    'Intel(R) Xeon(R) CPU E5-2609 0 @ 2.40GHz'
-		// ]
-		
-		console.log('Installed Processors: ', results);
-	});
-
-
-**Parameters**
-
-**cb**:  *function*,  A callback function to handle the results (error, results).
-
-totalMemoryUsage(cb)
---------------------    
-Gets the total memory usage value in KB , MB and GB .
-      
-     var cpu = require('windows-cpu');
-    
-     // Get the memory usage 
-     cpu.totalMemoryUsage(function(error, results) {
-          if(error) {
-              return console.log(error);
-          }
-    
-          // results =>
-          // { 
-          //    usageInKb: 3236244,
-          //    usageInMb: 3160.39453125,
-          //    usageInGb: 3.086322784423828 
-          // }
-    
-          console.log('Total Memory Usage: ', result);
-     });
-
-**Parameters**
-
-**cb**:  *function*,  A callback function to handle the results (error, results).
-
+```js
+const cpu = require('windows-cpu');
+```
 
 ----------
 
-# Issues
+# API Documentation
+When requiring `windows-cpu`, you are returned an isntance of the `WindowsCPU` class. To get access to the constructor to create your own instance, you may do:
+
+```js
+const WindowsCPU = require('windows-cpu').WindowsCPU;
+const cpu = new WindowsCPU();
+// ...
+```
+## Methods
+
+#### isSupported()
+Checks if the current system supports WindowsCPU. It checks to ensure the platform is `win32` and that WMIC exists on the system.
+
+**Example:**
+```js
+if(!cpu.isSupported()) {
+    throw new Error('windows-cpu is not supported on this platform');
+}
+```
+
+###### Returns: _Boolean_
+> `true` if system is supported, otherwise `false`.
+
+#### totalLoad()
+Gets the total CPU load of the system for each physical CPU.
+
+**Example:**
+```js
+// Promise
+cpu.totalLoad().then(load => {
+    console.log(load);
+    // Single CPU example:
+    // => [10]
+    // Multi-CPU example:
+    // => [10, 5]
+});
+
+// async/await
+let load = await cpu.totalLoad();
+console.log(load);
+// => [10]
+```
+
+###### Returns: _Promise[Array]_
+> Resolves with an array of load percentages for each core of the processor.
+
+#### findLoad([process])
+Gets the load of all processes running on the machine or the load of a specific process if `process` is provided. The parameter `process` may be a string (process name) or number (process ID) to get the load for.
+
+**Example:**
+```js
+// Without process parameter
+cpu.findLoad().then(({ load, found }) => {
+    console.log(load);
+    // => [40]
+    console.log(found);
+    /* =>
+        [{
+            pid: 12345,
+            process: 'Chrome',
+            load: 1
+        }, ...]
+    */
+});
+
+// With process parameter
+cpu.findLoad('Chrome').then(({ load, found }) => {
+    console.log(load);
+    // => [1]
+    console.log(found);
+    /* =>
+        [{
+            pid: 12345,
+            process: 'Chrome',
+            load: 1
+        }]
+    */
+});
+
+// async/await
+let { load, found } = await cpu.findLoad('Chrome');
+console.log(load);
+console.log(found);
+```
+
+###### Returns: _Promise[Object]_
+> Resolves with an object containing `load` (Numeric total percent the process(es) load) and `found` (array of objects containing `pid` - process id, `process` - process name, `load` - the load percent of this process).
+
+#### nodeLoad()
+Shortcut for calling `cpu.findLoad('node')`. This will return the current load for all `node` processes running on the system.
+
+**Example:**
+```js
+// Promise
+cpu.nodeLoad().then(({ load, found }) => {
+    console.log(load);
+    // => [0]
+    console.log(found);
+    /* =>
+        [{
+            pid: 12345,
+            process: 'node',
+            load: 0
+        }]
+    */
+});
+
+// async/await
+let { load, found } = await cpu.nodeLoad();
+console.log(load);
+console.log(found);
+```
+
+###### Returns: _Promise[Object]_
+> Resolves with the same information as `findLoad()`.
+
+#### thisLoad()
+Shortcut for calling `cpu.findLoad(process.pid)`. This will return the load for the current node process running.
+
+**Example:**
+```js
+// Promise
+cpu.thisLoad().then(({ load, found }) => {
+    console.log(load);
+    // => [0]
+    console.log(found);
+    /* =>
+        [{
+            pid: 12345,
+            process: 'node',
+            load: 0
+        }]
+    */
+});
+
+// async/await
+let { load, found } = await cpu.thisLoad();
+console.log(load);
+console.log(found);
+```
+
+###### Returns: _Promise[Object]_
+> Resolves with the same information as `findLoad()`.
+
+#### cpuInfo()
+Gets a list of all CPUs installed in the machine.
+
+**Example:**
+```js
+// Promise
+cpu.cpuInfo().then(cpus => {
+    console.log(cpus);
+    /* =>
+        [
+            'Intel(R) Xeon(R) CPU E5-2609 0 @ 2.40GHz',
+            'Intel(R) Xeon(R) CPU E5-2609 0 @ 2.40GHz'
+        ]
+    */
+});
+
+// async/await
+let cpus = await cpu.cpuInfo();
+console.log(cpus);
+```
+
+###### Returns: _Promise[Array]_
+> Resolves with array of CPU(s).
+
+#### totalMemoryUsage()
+Gets the total memory usage for the system in multiple formats.
+
+**Example:**
+```js
+// Promise
+cpu.totalMemoryUsage().then(mem => {
+    console.log(mem);
+    /* =>
+        {
+            usageInKb: 3236244,
+            usageInMb: 3160.39453125,
+            usageInGb: 3.086322784423828 
+        }
+    */
+});
+
+// async/await
+let mem = cpu.totalMemoryUsage();
+console.log(mem);
+```
+
+###### Returns: _Promise[Object]_
+> Resolves with object containing keys: `usageInKb` (total in KB), `usageInMb` (total in MB), and `usageInGb` (total in GB).
+
+----------
+
+## Issues
 Please post any issues you find in the issues section of this repository.
 
-# Contributing
+## Contributing
 If you would like to contribute to windows-cpu, please make sure you follow the guidelines in CONTRIBUTING.md in this repository.
 
-# License
+## License
 Licensed under the MIT License. Please see LICENSE in this repository for more information.

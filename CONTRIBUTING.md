@@ -19,6 +19,3 @@ If you are contributing to this project, feel free to add yourself to the contri
 
 ## Nit-picky Code Styles
 I'm usually lenient on coding style as long as it is efficient and still readable. So please do not leave a mess! There are a few things I am trying to stick with for readability and debugging purposes.
-
-### Named Closures/Anonymous Functions
-Please provide a name to anonymous functions and closures so it will show in the call stack if there is an error. This makes debugging a lot easier although it does add a bit more of weight to the file.
