@@ -1,6 +1,9 @@
 # windows-cpu History
 Changes to `windows-cpu` will be recorded in this file.
 
+## 0.1.6 (5/28/2018)
+* Removed OS limitation from package.json to prevent issues with installation when windows-cpu is used as an optional dependency (#13).
+
 ## 0.1.5 (5/24/2018)
 * Added `command-join` dependency.
 * Fix command line injection vulnerability - CWE-94 (thanks Daniel Bond).
