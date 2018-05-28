@@ -1,6 +1,9 @@
 # windows-cpu History
 Changes to `windows-cpu` will be recorded in this file.
 
+## 1.0.1 (5/28/2018)
+* Removed OS limitation from package.json to prevent issues with installation when windows-cpu is used as an optional dependency (#13).
+
 ## 1.0.0 (5/24/2018)
 * **BREAKING:** `checkPlatform()` has been renamed to `isSupported()` and is no longer called in the constructor.
 * **BREAKING:** `processLoad()` has been renamed to `thisLoad()`.
@@ -12,6 +15,9 @@ Changes to `windows-cpu` will be recorded in this file.
 * Refactor to ES6
 * Added dependency `command-join` to assist with escaping malicious input to `findLoad()`.
 * Added CI for testing new releases.
+
+## 0.1.6 (5/28/2018)
+* Removed OS limitation from package.json to prevent issues with installation when windows-cpu is used as an optional dependency (#13).
 
 ## 0.1.5 (5/24/2018)
 * Added `command-join` dependency.
