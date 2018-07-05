@@ -67,8 +67,8 @@ class WindowsCPU {
      * @return {Promise<Object>} 
      */
     async findLoad(arg) {
-        if(arg) cmd += ` | findstr /i /c:${commandJoin([arg])}`;
         let cmd = `${this.wmic} path Win32_PerfFormattedData_PerfProc_Process get Name,PercentProcessorTime,IDProcess`;
+        if(arg) cmd += ` | findstr /i /c:${this._shellEscape(arg)}`;
         
         let { stdout, stderr } = await exec(cmd).catch(e => { throw e; });
         if(stderr) throw new Error(stderr);
@@ -144,6 +144,16 @@ class WindowsCPU {
         results.usageInGb = results.usageInMb / 1024;
         
         return results;
+    }
+    
+    /**
+     * Sanitizes input to prevent malicious shell injection
+     * @private 
+     * @param  {String} arg  The string to sanitize
+     * @return {String}      The santized string
+     */
+    _shellEscape(arg) {
+        return arg.split(' ')[0].replace(/[^A-Z0-9.]/ig, '');
     }
 }
 
