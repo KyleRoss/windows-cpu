@@ -1,6 +1,14 @@
 # windows-cpu History
 Changes to `windows-cpu` will be recorded in this file.
 
+## 1.1.0 (7/5/2018)
+* **NEW:** Moved `wmic` constant to class property `cpu.wmic` to allow overriding the location of `wmic.exe` and to handle certain issues when testing on non-Windows systems.
+* **FIX:** The default `wmic` path now contains a default `/` if `process.env.SystemRoot` is `undefined`. (#14)
+* Removed `command-join` dependency which was used for escaping shell input in `findLoad()`. This has been replaced with a more simple solution which makes this module dependency-free again.
+* Added `_shellEscape()` method that is a simple way to escape possible malicious input to the `findLoad()` method.
+* Added tests for `_shellEscape()`.
+* Misc. cleanup.
+
 ## 1.0.1 (5/28/2018)
 * Removed OS limitation from package.json to prevent issues with installation when windows-cpu is used as an optional dependency (#13).
 
