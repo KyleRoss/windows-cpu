@@ -1,5 +1,8 @@
 version: 1.0.{build}
 skip_tags: true
+image:
+- Visual Studio 2015
+- Visual Studio 2017
 install:
 - cmd: npm install
 build: off

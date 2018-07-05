@@ -5,7 +5,7 @@
 
 CPU monitoring utilities for Node.js apps on Windows.
 
-##### NOTE: Version 1.0.0 only supports Node v8+. If you need to support an older version of Node, install `windows-cpu@0.1.6` - See [version 0.1.6](https://github.com/KyleRoss/windows-cpu/tree/legacy).
+##### NOTE: Version 1.0.0+ only supports Node v8+. If you need to support an older version of Node, install `windows-cpu@0.1.6` - See [version 0.1.6](https://github.com/KyleRoss/windows-cpu/tree/legacy).
 
 ## About
 A small API that provides load information about any process or the system on Windows platforms. Node.js does have `os.loadavg()` although it does not work correctly in Windows. Windows-CPU is a module that uses native Windows commands to compile load information. It's a lightweight module that has only one dependency and suitable tests.
@@ -49,6 +49,20 @@ const WindowsCPU = require('windows-cpu').WindowsCPU;
 const cpu = new WindowsCPU();
 // ...
 ```
+
+## Properties
+#### wmic _{String}_
+Path to `wmic` executable. Allows overriding the path to the executable for all `wmic` commands. Default: `${process.env.SystemRoot}\System32\wbem\wmic.exe`
+
+**Example:**
+```js
+const cpu = require('windows-cpu');
+const path = require('path');
+
+cpu.wmic = path.join('/Windows', 'path', 'to', 'wmic.exe');
+// => C:\Windows\path\to\wmic.exe
+```
+
 ## Methods
 
 #### isSupported()
