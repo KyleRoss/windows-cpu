@@ -153,6 +153,7 @@ class WindowsCPU {
      * @return {String}      The santized string
      */
     _shellEscape(arg) {
+        if(typeof arg === 'number') return arg;
         return arg.split(' ')[0].replace(/[^A-Z0-9.]/ig, '');
     }
 }
