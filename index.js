@@ -11,7 +11,6 @@ const path = require('path');
 const util = require('util');
 const cp = require('child_process');
 const platform = require('os').platform();
-const commandJoin = require('command-join');
 
 const exec = util.promisify(cp.exec);
 const execFile = util.promisify(cp.execFile);
