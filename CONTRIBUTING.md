@@ -7,12 +7,12 @@ Make sure to write JSDoc3 style documentation above each method. It should follo
 Make sure to update the README.md file with your changed/new documentation.
 
 ## Tests
-Make sure to write tests for any new functionality and update tests for any changed functionality. Tests are written in Mocha and Should.js.
+Make sure to write tests for any new functionality and update tests for any changed functionality. Tests are written in Mocha and Chai.
 
 Please run the tests before submitting your pull request to ensure everything is running correctly.
 
 ## Different Platforms
-Since this can and may act differently on different versions of Windows, please keep in mind that new or changed functionality either needs to be tested and confirmed work on the various versions or I may delay your pull request until it's fully tested.
+Since this can and may act differently on different versions of Windows, please keep in mind that new or changed functionality either needs to be tested and confirmed work on the various versions or I may delay your pull request until it's fully tested. Luckily, most of this can be tested through the CI.
 
 ## Contributors
 If you are contributing to this project, feel free to add yourself to the contributors section of the package.json. Since open source is very important to me, I think everyone should be recognized, even for the smallest changes.
