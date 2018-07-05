@@ -1,7 +1,6 @@
 /**
  * windows-cpu module for Node.js to get various load statistics.
  * @module windows-cpu
- * @version 1.0.0
  * @author Kyle Ross
  * @license MIT License
  */
