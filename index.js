@@ -15,7 +15,6 @@ const commandJoin = require('command-join');
 
 const exec = util.promisify(cp.exec);
 const execFile = util.promisify(cp.execFile);
-const wmic = path.join(process.env.SystemRoot, 'System32', 'wbem', 'wmic.exe');
 
 /**
  * @class Public class for WindowsCPU
@@ -27,6 +26,11 @@ class WindowsCPU {
          * @type {Class}
          */
         this.WindowsCPU = WindowsCPU;
+        /**
+         * Path the `wmic` executable
+         * @type {String}
+        */
+        this.wmic = path.join(process.env.SystemRoot || '/', 'System32', 'wbem', 'wmic.exe');
     }
     
     /**
@@ -37,7 +41,7 @@ class WindowsCPU {
         if(platform !== 'win32') return false;
         
         try {
-            fs.accessSync(wmic);
+            fs.accessSync(this.wmic);
         } catch(e) {
             return false;
         }
@@ -51,7 +55,7 @@ class WindowsCPU {
      * @return {Promise<Array>} 
      */
     async totalLoad() {
-        let { stdout, stderr } = await execFile(wmic, ['cpu', 'get', 'loadpercentage']).catch(e => { throw e; });
+        let { stdout, stderr } = await execFile(this.wmic, ['cpu', 'get', 'loadpercentage']).catch(e => { throw e; });
         if(stderr) throw new Error(stderr);
         
         return (stdout.match(/\d+/g) || []).map(x => +(x.trim()));
@@ -64,8 +68,8 @@ class WindowsCPU {
      * @return {Promise<Object>} 
      */
     async findLoad(arg) {
-        let cmd = 'wmic path Win32_PerfFormattedData_PerfProc_Process get Name,PercentProcessorTime,IDProcess';
         if(arg) cmd += ` | findstr /i /c:${commandJoin([arg])}`;
+        let cmd = `${this.wmic} path Win32_PerfFormattedData_PerfProc_Process get Name,PercentProcessorTime,IDProcess`;
         
         let { stdout, stderr } = await exec(cmd).catch(e => { throw e; });
         if(stderr) throw new Error(stderr);
@@ -111,7 +115,7 @@ class WindowsCPU {
      * @return {Promise<Array>} 
      */
     async cpuInfo() {
-        let { stdout, stderr } = await execFile(wmic, ['cpu', 'get', 'Name']).catch(e => { throw e; });
+        let { stdout, stderr } = await execFile(this.wmic, ['cpu', 'get', 'Name']).catch(e => { throw e; });
         if(stderr) throw new Error(stderr);
         
         let cpus = stdout.match(/[^\r\n]+/g).map(v => v.trim());
