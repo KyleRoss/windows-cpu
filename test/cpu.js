@@ -132,5 +132,25 @@ describe('Module', () => {
                 }).catch(e => { done(e); });
             });
         });
+        
+        describe('_shellEscape()', () => {
+            it('should be a function', () => {
+                assert.isFunction(cpu._shellEscape);
+            });
+            
+            it('should return string with proper input', () => {
+                let result = cpu._shellEscape('node');
+
+                assert.isString(result);
+                assert.equal(result, 'node');
+            });
+            
+            it('should return a sanitized string with malicious input', () => {
+                let result = cpu._shellEscape('node & calc.exe');
+
+                assert.isString(result);
+                assert.equal(result, 'node');
+            });
+        });
     });
 });
